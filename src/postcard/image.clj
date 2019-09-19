@@ -3,7 +3,7 @@
 						[quil.middleware :as m])
 	(:gen-class))
 
-(def img-name "generated/circle.svg")
+(def img-name "/tmp/circle.svg")
 
 (defn mm-to-px
 	[mm]
@@ -28,11 +28,11 @@
 	(q/sketch
 	 :draw (fn []
 					 (q/do-record (q/create-graphics a4-w a4-h :svg img-name)
-												(draw))
-					 (q/exit))))
+												(draw)) ))
+	)
 
 (defn gen-image
 	""
 	[x]
-	(sketch-pdf)
+	(sketch-svg)
 	(println img-name))

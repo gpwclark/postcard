@@ -4,7 +4,8 @@
 					 [com.lob.model Postcard$RequestBuilder]
 					 [com.lob.model Postcard])
 	(:require [cli-matic.core :refer [run-cmd]]
-						[postcard.image :as img])
+						[postcard.image :as img]
+						[postcard.pdf :as body])
 	(:gen-class))
 
 (defn get-address
@@ -85,6 +86,16 @@
 								 {:command "image" :short "i"
 									:description ["Generate an image to use as the front of the postcard."]
 									:runs img/gen-image}
+								 {:command "fonts" :short "f"
+									:description ["Generate the postcard body or 'letter' part. This will be the written note on the
+									back of the postcard. It will be half of the surface area."]
+									:runs body/list-fonts}
+								 {:command "body" :short "b"
+									:description ["Generate the postcard body or 'letter' part. This will be the written note on the
+									back of the postcard. It will be half of the surface area."]
+									:opts [{:option "content" :short "c" :as "Provide content for postcard." :type :string :default
+																	"No matter where you go, there you are."}]
+									:runs body/gen-body}
 								 ]})
 
 (defn -main

@@ -12,10 +12,12 @@
 	:aot :all
 	:native-image {:name "postcard.bin"
 								 :opts ["--report-unsupported-elements-at-runtime"
-												"--initialize-at-build-time"
+												;;"--initialize-at-build-time"
 												"--no-fallback"
+                                                ;;"--initialize-at-run-time=sun.java2d.opengl.OGLRenderQueue"
 												"-J-Xmx3G"
 												"-J-Xms3G"
-												;;"--allow-incomplete-classpath"
+												"--allow-incomplete-classpath"
+                                                "-H:+TraceClassInitialization"
 												]}
 	)
