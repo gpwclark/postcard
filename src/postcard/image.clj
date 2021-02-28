@@ -3,6 +3,10 @@
 						[quil.middleware :as m])
 	(:gen-class))
 
+
+;; http://nbeloglazov.com/2014/05/29/quil-intro.html
+;; http://quil.info/api
+;; https://tylerxhobbs.com/essays/2015/using-quil-for-artwork
 (def img-name "/tmp/circle.svg")
 
 (defn mm-to-px
