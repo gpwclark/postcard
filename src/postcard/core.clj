@@ -1,7 +1,6 @@
 (ns postcard.core
 	(:require [cli-matic.core :refer [run-cmd]]
 						[postcard.post :as post]
-						[postcard.image :as img]
 						[postcard.html :as html])
 	(:gen-class))
 
@@ -16,38 +15,53 @@
 (defn gen-card-description
 	[type]
 	(str "Generate the postcard body or 'letter' part in " type " format. This will be the written note on the back of the
-	postcard
-	. It
-	will be half of the surface area."))
+	postcard. It will be half of the surface area."))
 
 (def CONFIGURATION
-	{:app
-	{:command "postcard"
-		:description "Command line app to send postcards with lob."
-		:version "0.1"}
-		:global-opts [{:option "key" :as "Key to use w/ api" :type :string :default "09SA9NL!Z82F93111LJ"}]
-		:commands
-			[{:command "post" :short "p"
-				:description ["Post to lob"
-											""
-											"Looks great, doesn't it?"]
-			:opts address-opts
-			:runs post/print-post}
+	{:app {:command "postcard"
+				 :description "Command line app to send postcards with lob."
+				 :version "0.1"}
+	 :global-opts [{:option "key" :as "Key to use w/ api" :type :string :default "09SA9NL!Z82F93111LJ"}]
+	 :commands
+	 [{:command "post" :short "p"
+		 :description ["Post to lob"
+									 ""
+									 "Looks great, doesn't it?"]
+		 :opts address-opts
+		 :runs post/print-post}
 
-	{:command "list" :short "l"
-			:description ["list postcards"
-										""
-										"Add optional limit, default 10."]
-			:opts [{:option "limit" :as "To limit list by..." :type :string :default "10"}]
-			:runs post/list-postcards}
-	{:command "image" :short "i"
-			:description ["Generate an image to use as the front of the postcard."]
-			:runs img/gen-image}
-	{:command "html" :short "h"
-			:description [(gen-card-description "html")]
-			:opts [{:option "content" :short "c" :as "Provide content for postcard." :type :string :default
-											"No matter where you go, there you are."}]
-			:runs html/gen-body}]})
+		{:command "list" :short "l"
+		 :description ["list postcards"
+									 ""
+									 "Add optional limit, default 10."]
+		 :opts [{:option "limit" :as "To limit list by..." :type :string :default "10"}]
+		 :runs post/list-postcards}
+		{:command "front" :short "f"
+		 :description ["Create postcard front... where the big image is."]
+		 :opts [{:option "tagline"
+						 :short "t" :as "Provide tagline for front of postcard."
+						 :type :string :default "I computed art and sent this postcard from the terminal with clojure!"}
+						{:option "img-link"
+						 :short "i" :as "Provide valid 4.25\" x 6.25\" image link."
+						 :type :string :default "https://priceclark.dev/postcard/cool-image.png"}
+						{:option "filename"
+						 :short "f" :as "Provide filename to write html file."
+						 :type :string :default "front.html"}]
+		 :runs html/gen-front}
+		{:command "back" :short "b"
+		 :description ["Create postcard front... where the big image is."]
+		 :opts [{:option "text"
+						 :short "t" :as "Provide text for back of postcard. Write something nice!"
+						 :type :string :default "No matter where you go, there you are."}
+						{:option "img-link"
+						 :short "i" :as "Provide valid 4.25\" x 6.25\" image link."
+						 :type :string :default "https://priceclark.dev/postcard/cool-image-back.png"}
+						{:option "filename"
+						 :short "f" :as "Provide filename to write html file."
+						 :type :string :default "back.html"}]
+		 :runs html/gen-back}
+		]})
+
 
 (defn -main
 	"This is our entry point.

@@ -6,7 +6,9 @@
 	:dependencies [[org.clojure/clojure "1.10.1"]
 								 [cli-matic "0.3.7"]
 								 [com.lob/lob-java "9.0.5"]
-								 [quil "3.1.0"]]
+								 [quil "3.1.0"]
+								 [hiccup "1.0.5"]
+								 [hiccup-bridge "1.0.1"]]
 	:jvm-opts ["-Dclojure.compiler.direct-linking=true"]
 	:main postcard.core
 	:aot :all

@@ -1,0 +1,41 @@
+*, *:before, *:after {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+body {
+    width: 6.25in;
+    height: 4.25in;
+    margin: 0;
+    padding: 0;
+    /*
+    background-image: url('https://priceclark.dev/postcard/cool-image.png');
+     */
+    background-size: 6.25in 4.25in;
+    background-repeat: no-repeat;
+}
+
+/* do not put text outside of the safe area */
+#safe-area {
+    position: absolute;
+    width: 5.875in;
+    height: 3.875in;
+    left: 0.1875in;
+    top: 0.1875in;
+    text-align: center;
+}
+
+#tagline {
+    position: relative;
+    top: 1in;
+    font-family: 'Source Sans Pro';
+    font-weight: 900;
+    font-size: .12in;
+    text-transform: lowercase;
+    letter-spacing: .0188in;
+    color: black;
+    outline: white;
+    padding-top: 1.17in;
+    width: 0.75in;
+}
