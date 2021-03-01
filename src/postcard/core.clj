@@ -5,9 +5,11 @@
 	(:gen-class))
 
 (def address-opts
-	(list {:option "to" :short "t" :as "name of recipient" :type :string :default "Spike Spiegel"}
+	(list {:option "front" :short "f" :as "html file of front of card. Generate with subcommand front!" :type :string :default "front.html"}
+				{:option "back" :short "b" :as "html file of back of card. Generate with subcommand back!" :type :string :default "back.html"}
+			  {:option "to" :short "t" :as "name of recipient" :type :string :default "Spike Spiegel"}
 				{:option "line1" :short "1" :as "first line of recipient address" :type :string :default "100 two-hundredths street"}
-				{:option "line2" :short "2" :as "second line of recipient address" :type :string :default "Apt B"}
+				{:option "line2" :short "2" :as "second line of recipient address" :type :string :default ""}
 				{:option "city" :short "c" :as "city of recipient address" :type :string :default "Springfield"}
 				{:option "state" :short "s" :as "state of recipient address" :type :string :default "Iowa"}
 				{:option "zip" :short "z" :as "zip code of recipient address" :type :string :default "52721"}))
@@ -16,20 +18,24 @@
 	{:app {:command "postcard"
 				 :description "Command line app to send postcards with lob."
 				 :version "0.1"}
-	 :global-opts [{:option "key" :as "Key to use w/ api" :type :string :default "09SA9NL!Z82F93111LJ"}]
+	 :global-opts [{:option "key"
+									:short "k"
+									:as "Key to use w/ api" :type :string :default ""}]
 	 :commands
 	 [{:command "post" :short "p"
 		 :description ["Post to lob"
 									 ""
 									 "Looks great, doesn't it?"]
 		 :opts address-opts
-		 :runs post/print-post}
+		 :runs post/post}
 
 		{:command "list" :short "l"
 		 :description ["list postcards"
 									 ""
 									 "Add optional limit, default 10."]
-		 :opts [{:option "limit" :as "To limit list by..." :type :string :default "10"}]
+		 :opts [{:option "limit"
+						 :as "To limit list by..."
+						 :type :string :default "10"}]
 		 :runs post/list-postcards}
 		{:command "front" :short "f"
 		 :description ["Create postcard front... where the big image is."]

@@ -1,54 +1,54 @@
 (ns postcard.post
+  (:require [clojure.pprint :as pp])
 	(:import [com.lob Lob]
 					 [com.lob.model Address$RequestBuilder]
 					 [com.lob.model Postcard$RequestBuilder]
 					 [com.lob.model Postcard])
 	(:gen-class))
 
+(def lob-version "2020-02-11")
+
 (defn get-address
 	"given an address, return address obj"
 	[name line1 line2 city state zip]
-	(-> (Address$RequestBuilder.)
-			(.setName name)
-			(.setLine1 line1)
-			(.setLine2 line2)
-			(.setCity city)
-			(.setState state)
-			(.setZip zip)))
+	(cond-> (Address$RequestBuilder.)
+			name (.setName name)
+			line1 (.setLine1 line1)
+			line2 (.setLine2 line2)
+			city (.setCity city)
+			state (.setState state)
+			zip (.setZip zip)))
 
 (defn get-postcard
 	""
-	[from address]
+	[^Address$RequestBuilder from ^Address$RequestBuilder to front back]
 	(-> (Postcard$RequestBuilder.)
-			(.setDescription "demo clojure postcard")
-			(.setTo address)
+			(.setDescription "clj generative art")
+			(.setTo to)
 			(.setFrom from)
-			(.setFront "https://lob.com/postcardfront.pdf")
-			(.setBack "https://lob.com/postcardback.pdf")
-			))
+			(.setFront (slurp front))
+			(.setBack (slurp back))
+			(.create)
+			(.getResponseBody)))
 
 (defn post
 	"Post postcard via http to lob."
-	[{:keys [to line1 line2 city state zip key]}]
-	(let [address (get-address to line1 line2 city state zip)
-				from (get-address (System/getenv "SENDER")
+	[{:keys [to line1 line2 city state zip front back key]}]
+	(let [init-lob (Lob/init key lob-version)
+				to (get-address to line1 line2 city state zip)
+				sender (System/getenv "FROM")
+				from (get-address (System/getenv "FROM")
 													(System/getenv "LINE1")
 													(System/getenv "LINE2")
 													(System/getenv "CITY")
 													(System/getenv "STATE")
 													(System/getenv "ZIP"))
-				postcard (get-postcard from address)]
-		(do
-			(Lob/init key "2019-06-01")
-			(-> (.create postcard)
-					(.getResponseBody)))))
+				postcard (get-postcard from to front back)]
+			(println postcard)))
 
-(defn print-post
-	[a]
-	(println (post a)))
 
 (defn list-postcards
 	[{:keys [limit key]}]
 	(let [x (+ 1 1)
-				init (Lob/init key "2019-06-01")]
-		(println (.getResponseBody (Postcard/list)))))
+				init (Lob/init key lob-version)]
+		(pp/pprint (.getResponseBody (Postcard/list)))))
