@@ -12,11 +12,6 @@
 				{:option "state" :short "s" :as "state of recipient address" :type :string :default "Iowa"}
 				{:option "zip" :short "z" :as "zip code of recipient address" :type :string :default "52721"}))
 
-(defn gen-card-description
-	[type]
-	(str "Generate the postcard body or 'letter' part in " type " format. This will be the written note on the back of the
-	postcard. It will be half of the surface area."))
-
 (def CONFIGURATION
 	{:app {:command "postcard"
 				 :description "Command line app to send postcards with lob."
